@@ -35,21 +35,25 @@ function createGalleryElements(galleryItems) {
 function galleryContainerClick(evt) {
     evt.preventDefault();
     if (evt.target.nodeName !== 'IMG') {
-        console.log('це не - IMG');
-        return;
+          return;
       };
-      console.log('це - IMG'); 
       removeActivGalleryLink();
       let activeLink = addActivGalleryLink(evt.target);           
       const instance = basicLightbox.create(`       
         <img src="${activeLink}">
     `);
     instance.show();
+
+    document.addEventListener('keydown', event => {
+        if (event.code !== 'Escape') {
+        alert('вихід по - Escape');
+        return;
+      };
+      instance.close(() => alert('lightbox завершив роботу'));
+      removeActivGalleryLink();
+    });
 };
 
-// треба якось передати поточну картинку ...
-// не можу передати з ф => ф . тому роблю все в 
-// f galleryContainerClick
 
 function removeActivGalleryLink() {
   const currentActiveLink = document.querySelector('.gallery__link-aktiv');
@@ -64,3 +68,4 @@ function addActivGalleryLink(link) {
   const activeLink = link.dataset.source;  
   return activeLink ;
 }
+
